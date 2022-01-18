@@ -44,4 +44,5 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
+fetchProduct()
 window.onload = () => { };
