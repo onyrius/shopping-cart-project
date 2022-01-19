@@ -1,4 +1,4 @@
-function createProductImageElement({ thumbnail: imageSource }) {
+function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
   img.src = imageSource;
@@ -15,9 +15,9 @@ function createCustomElement(element, className, innerText) {
 function createProductItemElement({ sku, name, image }) {
   const section = document.createElement('section');
   section.className = 'item';
+  section.appendChild(createProductImageElement(image));
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
-  section.appendChild(createProductImageElement(image));
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
   return section;  
 }
@@ -27,9 +27,8 @@ function createProductItemElement({ sku, name, image }) {
 
 /* function cartItemClickListener() {
   // coloque seu código aqui
-}  */
-
-/* function createCartItemElement({ sku, name, salePrice }) {
+}
+function createCartItemElement({ sku, name, salePrice }) {
     const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
@@ -41,21 +40,17 @@ function createProductItemElement({ sku, name, image }) {
 async function awaitingAsynFunctions() {
   const dataProducts = await fetchProducts('computador'); 
   const objectProduct = {};
-  const result = dataProducts.forEach((products) => {
+  dataProducts.forEach((products) => {
+    console.log(products[1]);
    objectProduct.name = products[1].title;
    objectProduct.salePrice = products[1].price;
    objectProduct.sku = products[1].id;
-   objectProduct.image = products[1].thumbnail;
-   objectProduct.imageSource = products[1].thumbnail;
+   objectProduct.image = products[1].thumbnail.replace('I.jpg', 'W.webp');
    const sectionItem = document.querySelector('.items');
-   console.log();
    sectionItem.appendChild(createProductItemElement(objectProduct));
  });
-  console.log((result));
-   return result;
 }
 
 window.onload = () => { 
   awaitingAsynFunctions();
 };
-window.onload();
