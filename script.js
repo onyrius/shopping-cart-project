@@ -37,20 +37,22 @@ function createCartItemElement({ sku, name, salePrice }) {
 } */
 
 // trazendo as funçoes assincronas
-async function awaitingAsynFunctions() {
-  const dataProducts = await fetchProducts('computador'); 
-  console.log();
-  const objectProduct = {};
-  dataProducts.forEach((products) => {
-   objectProduct.name = products[1].title;
-   objectProduct.salePrice = products[1].price;
-   objectProduct.sku = products[1].id;
-   objectProduct.image = products[1].thumbnail.replace('I.jpg', 'W.webp');
-   const sectionItem = document.querySelector('.items');
+async function loadProducts() {
+  const itemProductsId = await fetchItem();
+  const dataProducts = await fetchProducts('computador');
+   console.log();
+   console.log();
+   const objectProduct = {};
+   dataProducts.forEach((products) => {
+     objectProduct.name = products[1].title;
+     objectProduct.salePrice = products[1].price;
+     objectProduct.sku = products[1].id;
+     objectProduct.image = products[1].thumbnail.replace('I.jpg', 'W.webp');
+     const sectionItem = document.querySelector('.items');
    sectionItem.appendChild(createProductItemElement(objectProduct));
  });
 }
 
 window.onload = () => { 
-  awaitingAsynFunctions();
+  loadProducts();
 };

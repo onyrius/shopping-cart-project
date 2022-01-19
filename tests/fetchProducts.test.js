@@ -10,8 +10,7 @@ describe('1 - Teste a função fecthProducts',  () => {
 
   it('Execute a função fetchProducts com o argumento "computador" e teste se fetch foi chamada;', async () => {
     const fetchProductsTested = await fetchProducts('computador');
-  //  console.log(fetchProductsTested);
-    expect(fetchProductsTested[0][1].id).toBe('MLB1615760527');
+     expect(fetchProductsTested[0][1].id).toBe('MLB1615760527');
   })
   it('Teste se, ao chamar a função fetchProducts com o argumento "computador", a função fetch utiliza o endpoint "https://api.mercadolibre.com/sites/MLB/search?q=computador";', async () => {
     await fetchProducts('computador')
