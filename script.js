@@ -39,9 +39,9 @@ function createCartItemElement({ sku, name, salePrice }) {
 // trazendo as funçoes assincronas
 async function awaitingAsynFunctions() {
   const dataProducts = await fetchProducts('computador'); 
+  console.log();
   const objectProduct = {};
   dataProducts.forEach((products) => {
-    console.log(products[1]);
    objectProduct.name = products[1].title;
    objectProduct.salePrice = products[1].price;
    objectProduct.sku = products[1].id;
