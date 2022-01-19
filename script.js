@@ -38,7 +38,6 @@ function createCartItemElement({ sku, name, salePrice }) {
 
 // trazendo as funçoes assincronas
 async function loadProducts() {
-  const itemProductsId = await fetchItem();
   const dataProducts = await fetchProducts('computador');
    console.log();
    console.log();
@@ -52,7 +51,12 @@ async function loadProducts() {
    sectionItem.appendChild(createProductItemElement(objectProduct));
  });
 }
+async function loadItemsCart() {
+  const itemProduct = await fetchItem(IdProduct); 
+  return itemProduct;
+}
 
 window.onload = () => { 
   loadProducts();
+  loadItemsCart();
 };
