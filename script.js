@@ -35,9 +35,10 @@ function createProductItemElement({ sku, name, image, salePrice }) {
  * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_node_parentelement
  */
  function cartItemClickListener() {
-   
-  }
-
+   const olCart = document.querySelector('.cart__items');
+   const litextCart = document.querySelector('.cart__item');
+   olCart.removeChild(litextCart);
+ }
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
     const li = document.createElement('li');
   li.className = 'cart__item';
@@ -50,6 +51,7 @@ const addCartProductItemID = async ({ target }) => {
   const listaDeItensCart = document.querySelector('.cart__items');
   const getId = getSkuFromProductItem(target.parentElement); 
   const itemProduct = await fetchItem(getId);
+  console.log(itemProduct);
   const { id, title, price } = itemProduct;
   const itemCartOn = createCartItemElement({ id, price, title });
   listaDeItensCart.appendChild(itemCartOn);
