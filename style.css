@@ -127,6 +127,10 @@ body {
   color: white;
 }
 
+.item .item__price {
+  text-align: center;
+}
+
 .cart {
   display: flex;
   flex-basis: 32%;
