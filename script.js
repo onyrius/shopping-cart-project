@@ -51,9 +51,8 @@ const addCartProductItemID = async ({ target }) => {
   const getId = getSkuFromProductItem(target.parentElement); 
   const itemProduct = await fetchItem(getId);
   const { id, title, price } = itemProduct;
-  const itemCartOn = createCartItemElement({ id, name, price, title });
+  const itemCartOn = createCartItemElement({ id, price, title });
   listaDeItensCart.appendChild(itemCartOn);
-  console.log(itemProduct);
 };
 
 const addClickOnItemProductBtn = () => {
