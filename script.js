@@ -1,3 +1,5 @@
+const listaDeItensCart = document.querySelector('.cart__items'); // ol do carrinho
+console.log(listaDeItensCart);
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -34,28 +36,39 @@ function createProductItemElement({ sku, name, image, salePrice }) {
 /** Source: sobre parent element
  * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_node_parentelement
  */
- function cartItemClickListener() {
-   const olCart = document.querySelector('.cart__items');
-   const litextCart = document.querySelector('.cart__item');
-   olCart.removeChild(litextCart);
+ 
+function cartItemClickListener(event) {
+  event.target.remove();
+  
+  saveCartItems(listaDeItensCart.innerHTML); // atualiza o localStorage
  }
+ 
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
-    const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
-  return li;
-}
-
-const addCartProductItemID = async ({ target }) => {
-  const listaDeItensCart = document.querySelector('.cart__items');
-  const getId = getSkuFromProductItem(target.parentElement); 
+   const li = document.createElement('li');
+   li.className = 'cart__item';
+   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+   li.addEventListener('click', cartItemClickListener);
+   return li;
+  }
+  
+  const loadLocalStorage = () => {
+    const loadStorage = getSavedCartItems();
+     // somente depois que cada linha è criada, chamamos novamente e colocamos o escutador
+     listaDeItensCart.innerHTML = loadStorage;
+     
+     const allLiCart = document.querySelectorAll('cart__items');
+      allLiCart.forEach((liCart) => {
+      liCart.addEventListener('click', cartItemClickListener);
+      }); 
+  };
+  const addCartProductItemID = async ({ target }) => {
+    const getId = getSkuFromProductItem(target.parentElement); 
   const itemProduct = await fetchItem(getId);
   const { id, title, price } = itemProduct;
   const itemCartOn = createCartItemElement({ id, price, title });
   listaDeItensCart.appendChild(itemCartOn);
- saveCartItems(listaDeItensCart.appendChild(itemCartOn));
-};
+   saveCartItems(listaDeItensCart.innerHTML); // atualiza o localStorage
+ };
 
 const addClickOnItemProductBtn = () => {
   const allProductsButtons = document.querySelectorAll('.item__add');
@@ -67,8 +80,6 @@ const addClickOnItemProductBtn = () => {
 // trazendo as funçoes assincronas
 async function loadProducts() {
   const dataProducts = await fetchProducts('computador');
-   console.log();
-   console.log();
    const objectProduct = {};
    dataProducts.forEach((products) => {
      objectProduct.name = products[1].title;
@@ -79,9 +90,17 @@ async function loadProducts() {
    sectionItem.appendChild(createProductItemElement(objectProduct));
  });
 }
-const loadLocalStorage = () => {
- if (saveCartItems()) getSavedCartItems();
+
+const removeAll = () => {
+ listaDeItensCart.innerHTML = '';
+ saveCartItems(listaDeItensCart.innerHTML);
+ const cartNew = document.querySelector('.cart_items');
+   return cartNew;
 };
+
+const buttonEraseAll = document.querySelector('.empty-cart');
+buttonEraseAll.addEventListener('click', removeAll);
+
 window.onload = async () => { 
  await loadProducts();
  addClickOnItemProductBtn();
