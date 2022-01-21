@@ -55,12 +55,15 @@ function createCartItemElement({ id: sku, title: name, price: salePrice }) {
     const loadStorage = getSavedCartItems();
      // somente depois que cada linha è criada, chamamos novamente e colocamos o escutador
      listaDeItensCart.innerHTML = loadStorage;
-     
-     const allLiCart = document.querySelectorAll('cart__items');
-      allLiCart.forEach((liCart) => {
-      liCart.addEventListener('click', cartItemClickListener);
-      }); 
+     return listaDeItensCart;
   };
+  const addBtnNewLi = () => {
+    const allLiCart = document.querySelectorAll('.cart__item');
+    allLiCart.forEach((liCart) => {
+    liCart.addEventListener('click', cartItemClickListener);
+    }); 
+  };
+
   const addCartProductItemID = async ({ target }) => {
     const getId = getSkuFromProductItem(target.parentElement); 
   const itemProduct = await fetchItem(getId);
@@ -95,7 +98,7 @@ const removeAll = () => {
  listaDeItensCart.innerHTML = '';
  saveCartItems(listaDeItensCart.innerHTML);
  const cartNew = document.querySelector('.cart_items');
-   return cartNew;
+ return cartNew;
 };
 
 const buttonEraseAll = document.querySelector('.empty-cart');
@@ -105,6 +108,7 @@ window.onload = async () => {
  await loadProducts();
  addClickOnItemProductBtn();
  loadLocalStorage();
+ addBtnNewLi();
 };
 /** Source: 
  * projeto densenvolvido com o auxilio do repositorio do Thiago Nobrega:
