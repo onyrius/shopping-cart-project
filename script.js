@@ -51,10 +51,10 @@ const addCartProductItemID = async ({ target }) => {
   const listaDeItensCart = document.querySelector('.cart__items');
   const getId = getSkuFromProductItem(target.parentElement); 
   const itemProduct = await fetchItem(getId);
-  console.log(itemProduct);
   const { id, title, price } = itemProduct;
   const itemCartOn = createCartItemElement({ id, price, title });
   listaDeItensCart.appendChild(itemCartOn);
+ saveCartItems(listaDeItensCart.appendChild(itemCartOn));
 };
 
 const addClickOnItemProductBtn = () => {
@@ -79,10 +79,13 @@ async function loadProducts() {
    sectionItem.appendChild(createProductItemElement(objectProduct));
  });
 }
- 
+const loadLocalStorage = () => {
+ if (saveCartItems()) getSavedCartItems();
+};
 window.onload = async () => { 
  await loadProducts();
  addClickOnItemProductBtn();
+ loadLocalStorage();
 };
 /** Source: 
  * projeto densenvolvido com o auxilio do repositorio do Thiago Nobrega:
