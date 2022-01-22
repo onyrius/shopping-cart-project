@@ -104,9 +104,6 @@ const removeAll = () => {
 const buttonEraseAll = document.querySelector('.empty-cart');
 buttonEraseAll.addEventListener('click', removeAll);
 
-/** Source loading: Repositorio da Tabata Souto
- * https://github.com/tryber/sd-018-b-project-shopping-cart/pull/8/files
- */
 const putLoadind = () => {
   const loading = document.createElement('p');
   loading.innerText = 'carregando...';
