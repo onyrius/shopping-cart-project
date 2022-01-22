@@ -104,11 +104,24 @@ const removeAll = () => {
 const buttonEraseAll = document.querySelector('.empty-cart');
 buttonEraseAll.addEventListener('click', removeAll);
 
+/** Source loading: Repositorio da Tabata Souto
+ * https://github.com/tryber/sd-018-b-project-shopping-cart/pull/8/files
+ */
+const putLoadind = () => {
+  const loading = document.createElement('p');
+  loading.innerText = 'carregando...';
+  loading.className = 'loading';
+  listaDeItensCart.appendChild(loading);
+  return loading;
+}; 
+
 window.onload = async () => { 
- await loadProducts();
- addClickOnItemProductBtn();
- loadLocalStorage();
- addBtnNewLi();
+ putLoadind();
+await loadProducts();
+putLoadind().remove();
+addClickOnItemProductBtn();
+loadLocalStorage();
+addBtnNewLi();
 };
 /** Source: 
  * projeto densenvolvido com o auxilio do repositorio do Thiago Nobrega:
