@@ -1,5 +1,16 @@
 const listaDeItensCart = document.querySelector('.cart__items'); // ol do carrinho
-console.log(listaDeItensCart);
+
+const calculatePrice = () => {
+  const subtotal = document.querySelector('.total-price');
+  const liToCalculate = document.querySelectorAll('.cart__item');
+  const liToCalculateArray = [...liToCalculate];
+  const total = liToCalculateArray.reduce((acc, li) => {
+  const liNumber = li.innerText.match(/\$\d+. ?\d+/g)[0].substring(1); // procura o numero dentro do innerText com regex e depois retira o cifrao
+  return acc + parseFloat(liNumber); 
+}, 0);
+   subtotal.innerText = total;
+};
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -39,8 +50,8 @@ function createProductItemElement({ sku, name, image, salePrice }) {
  
 function cartItemClickListener(event) {
   event.target.remove();
-  
-  saveCartItems(listaDeItensCart.innerHTML); // atualiza o localStorage
+  saveCartItems(listaDeItensCart.innerHTML);// atualiza o localStorage
+  calculatePrice();
  }
  
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
@@ -50,7 +61,7 @@ function createCartItemElement({ id: sku, title: name, price: salePrice }) {
    li.addEventListener('click', cartItemClickListener);
    return li;
   }
-  
+ 
   const loadLocalStorage = () => {
     const loadStorage = getSavedCartItems();
      // somente depois que cada linha è criada, chamamos novamente e colocamos o escutador
@@ -70,8 +81,9 @@ function createCartItemElement({ id: sku, title: name, price: salePrice }) {
   const { id, title, price } = itemProduct;
   const itemCartOn = createCartItemElement({ id, price, title });
   listaDeItensCart.appendChild(itemCartOn);
-   saveCartItems(listaDeItensCart.innerHTML); // atualiza o localStorage
- };
+  saveCartItems(listaDeItensCart.innerHTML); // atualiza o localStorage
+  calculatePrice();
+};
 
 const addClickOnItemProductBtn = () => {
   const allProductsButtons = document.querySelectorAll('.item__add');
@@ -80,9 +92,9 @@ const addClickOnItemProductBtn = () => {
   });
 };
 
-// trazendo as funçoes assincronas
-async function loadProducts() {
-  const dataProducts = await fetchProducts('computador');
+ // trazendo as funçoes assincronas
+ async function loadProducts() {
+   const dataProducts = await fetchProducts('computador');
    const objectProduct = {};
    dataProducts.forEach((products) => {
      objectProduct.name = products[1].title;
@@ -90,35 +102,36 @@ async function loadProducts() {
      objectProduct.sku = products[1].id;
      objectProduct.image = products[1].thumbnail.replace('I.jpg', 'W.webp');
      const sectionItem = document.querySelector('.items');
-   sectionItem.appendChild(createProductItemElement(objectProduct));
- });
-}
+     sectionItem.appendChild(createProductItemElement(objectProduct));
+    });
+  }
 
-const removeAll = () => {
- listaDeItensCart.innerHTML = '';
- saveCartItems(listaDeItensCart.innerHTML);
- const cartNew = document.querySelector('.cart_items');
- return cartNew;
-};
-
-const buttonEraseAll = document.querySelector('.empty-cart');
-buttonEraseAll.addEventListener('click', removeAll);
-
-const putLoadind = () => {
-  const loading = document.createElement('p');
-  loading.innerText = 'carregando...';
-  loading.className = 'loading';
-  listaDeItensCart.appendChild(loading);
-  return loading;
-}; 
-
-window.onload = async () => { 
- putLoadind();
-await loadProducts();
-putLoadind().remove();
-addClickOnItemProductBtn();
-loadLocalStorage();
-addBtnNewLi();
+  const removeAll = () => {
+    listaDeItensCart.innerHTML = '';
+    saveCartItems(listaDeItensCart.innerHTML);
+    calculatePrice();
+    const cartNew = document.querySelector('.cart_items');
+    return cartNew;
+  };
+  
+  const buttonEraseAll = document.querySelector('.empty-cart');
+  buttonEraseAll.addEventListener('click', removeAll);
+  
+  const putLoadind = () => {
+    const loading = document.createElement('p');
+    loading.innerText = 'carregando...';
+    loading.className = 'loading';
+    listaDeItensCart.appendChild(loading);
+    return loading;
+  }; 
+  
+  window.onload = async () => { 
+    putLoadind();
+    await loadProducts();
+    putLoadind().remove();
+    addClickOnItemProductBtn();
+    loadLocalStorage();
+    addBtnNewLi();
 };
 /** Source: 
  * projeto densenvolvido com o auxilio do repositorio do Thiago Nobrega:
