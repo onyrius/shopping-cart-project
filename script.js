@@ -1,16 +1,15 @@
-const subtotal = document.querySelector('.total-price');
 const listaDeItensCart = document.querySelector('.cart__items'); // ol do carrinho
 
 const calculatePrice = () => {
   const liToCalculate = document.querySelectorAll('.cart__item');
+  const subtotal = document.querySelector('.total-price');
   const liToCalculateArray = [...liToCalculate];
   const total = liToCalculateArray.reduce((acc, li) => {
     const liNumber = li.innerText.match(/\$\d+. ?\d+/g)[0].substring(1); // procura o numero dentro do innerText com regex e depois retira o cifrao
     return acc + parseFloat(liNumber); 
   }, 0);
-  return total;
+  subtotal.innerText = total;    
 };
-subtotal.innerText = `${calculatePrice()}`;
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -51,7 +50,9 @@ function createProductItemElement({ sku, name, image, salePrice }) {
  
 function cartItemClickListener(event) {
   event.target.remove();
-  saveCartItems(listaDeItensCart.innerHTML);// atualiza o localStorage
+  const listaDeItensCart2 = document.querySelector('.cart__items');
+  saveCartItems(listaDeItensCart2.innerHTML);// atualiza o localStorage
+ // calculatePrice();
  }
  
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
@@ -66,7 +67,7 @@ function createCartItemElement({ id: sku, title: name, price: salePrice }) {
     const loadStorage = getSavedCartItems();
      // somente depois que cada linha è criada, chamamos novamente e colocamos o escutador
      listaDeItensCart.innerHTML = loadStorage;
-     return listaDeItensCart;
+    // calculatePrice();
   };
   const addBtnNewLi = () => {
     const allLiCart = document.querySelectorAll('.cart__item');
