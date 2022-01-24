@@ -5,10 +5,11 @@ const calculatePrice = () => {
   const subtotal = document.querySelector('.total-price');
   const liToCalculateArray = [...liToCalculate];
   const total = liToCalculateArray.reduce((acc, li) => {
-    const liNumber = li.innerText.match(/\$\d+. ?\d+/g)[0].substring(1); // procura o numero dentro do innerText com regex e depois retira o cifrao
+    const liNumber = li.innerText.match(/\$\d+\.?(\d+)?/)[0].substring(1); // procura o numero dentro do innerText com regex e depois retira o cifrao
+   console.log(liNumber);
     return acc + parseFloat(liNumber); 
   }, 0);
-  subtotal.innerText = total;    
+  subtotal.innerText = Math.round(total * 100) / 100;    
 };
 
 function createProductImageElement(imageSource) {
@@ -50,6 +51,7 @@ function createProductItemElement({ sku, name, image, salePrice }) {
  
 function cartItemClickListener(event) {
   event.target.remove();
+  calculatePrice();
   const listaDeItensCart2 = document.querySelector('.cart__items');
   saveCartItems(listaDeItensCart2.innerHTML);// atualiza o localStorage
  // calculatePrice();
